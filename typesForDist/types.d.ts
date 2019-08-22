@@ -1,6 +1,6 @@
-import { JSXInternal } from './jsx'
-export = mod
-export as namespace mod
+import { JSXInternal } from './jsx.d'
+export = pdfmakejsx
+export as namespace pdfmakejsx
 
 /*
   This technique to get JSX types on the distributed package is inpired by
@@ -9,7 +9,7 @@ export as namespace mod
   Difficulty was to get TS to that this is the JSX flavour we are talking about
 */
 
-declare namespace mod {
+declare namespace pdfmakejsx {
   export import JSX = JSXInternal
   interface HText {
     type: 'text'
