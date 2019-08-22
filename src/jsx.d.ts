@@ -15,6 +15,24 @@ type Alignment = 'left' | 'right' | 'justify' | 'center'
 type Decoration = 'underline' | 'lineThrough' | 'overline'
 type DecorationStyle = 'dashed' | 'dotted' | 'double' | 'wavy'
 
+type TableRowFunction = (row: number) => number
+
+type TableLayoutString = 'noBorders' | 'headerLineOnly' | 'lightHorizontalLines'
+
+interface TableLayoutFunctions {
+  hLineWidth?: (i: number, node: any) => number
+  vLineWidth?: (i: number, node: any) => number
+  hLineColor?: (i: number, node: any) => string
+  vLineColor?: (i: number, node: any) => string
+  fillColor?: (i: number, node: any) => string
+  paddingLeft?: (i: number, node: any) => number
+  paddingRight?: (i: number, node: any) => number
+  paddingTop?: (i: number, node: any) => number
+  paddingBottom?: (i: number, node: any) => number
+}
+
+type Width = number | 'auto' | '*'
+
 // element properties
 
 interface PdfProps {
@@ -43,7 +61,7 @@ interface Style {
   noWrap?: boolean
   markerColor?: string
   leadingIndent?: any // ??
-  width?: number | 'auto' | '*'
+  width?: Width
   margins?: number[]
   pageBreak?: 'before' | 'after'
 }
@@ -61,6 +79,14 @@ interface ImageProps {
   opacity?: number
 }
 
+interface TableProps {
+  dontBreakRows?: boolean
+  headerRows?: number
+  heights?: number[] | TableRowFunction
+  layout?: TableLayoutString | TableLayoutFunctions
+  widths?: Width[]
+}
+
 // jsx
 
 declare namespace JSX {
@@ -72,5 +98,7 @@ declare namespace JSX {
     ul: Style
     ol: Style
     image: ImageProps
+    table: TableProps
+    row: {}
   }
 }

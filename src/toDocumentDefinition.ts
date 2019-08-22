@@ -1,3 +1,4 @@
+import { propOr, propEq, omit } from 'ramda'
 import {
   ERROR
 } from './strings'
@@ -29,11 +30,21 @@ const convert = (data: HResult) => {
       }
     }
     if (tagName === 'image') {
-      const image = attributes['src'] || ''
-      const props = Object.keys(attributes).filter(key => key !== 'src').reduce((res, key) => ({ ...res, [key]: attributes['key'] }), {})
       return {
-        image,
-        ...props,
+        image: propOr('', 'src', attributes),
+        ...omit(['src'], attributes),
+      }
+    }
+    if (tagName === 'table') {
+      return {
+        layout: propOr(undefined, 'layout', attributes),
+        table: {
+          body: children
+            .filter(propEq('tagName', 'row'))
+            .filter(isElement)
+            .map(({ children }) => children.map(handleChild)),
+          ...omit(['layout'], attributes)
+        }
       }
     }
     return null

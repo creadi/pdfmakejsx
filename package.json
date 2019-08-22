@@ -5,10 +5,12 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "dependencies": {
-    "pdfmake": "^0.1.58"
+    "pdfmake": "^0.1.58",
+    "ramda": "^0.26.1"
   },
   "devDependencies": {
     "@types/pdfmake": "^0.1.8",
+    "@types/ramda": "^0.26.19",
     "ts-node": "^8.3.0",
     "typescript": "^3.5.3"
   },
