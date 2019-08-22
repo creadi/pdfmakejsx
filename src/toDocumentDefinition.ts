@@ -1,5 +1,5 @@
 import { pathEq, prop, propOr, propEq, omit, find } from 'ramda'
-import { ERROR, WARN } from './strings'
+import { ERROR } from './strings'
 import { HResult, HElement, HText } from './types'
 
 const isElement = (data: HResult): data is HElement =>
@@ -101,9 +101,6 @@ const elementsOutsideContainers = (data: HElement) => {
 
 export default (data: HResult) => {
   if (isElement(data) && parentElementIsPdf(data)) {
-    if (elementsOutsideContainers(data)) {
-      console.warn(WARN.elementsOutsideContainers)
-    }
     return {
       ...data.attributes,
       content: getElementChildren('content', data).map(convert).filter(Boolean),
