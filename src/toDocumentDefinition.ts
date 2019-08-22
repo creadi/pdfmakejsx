@@ -1,7 +1,5 @@
-import { propOr, propEq, omit } from 'ramda'
-import {
-  ERROR
-} from './strings'
+import { pathEq, propOr, propEq, omit, find } from 'ramda'
+import { ERROR } from './strings'
 import { HResult, HElement, HText } from './types'
 
 const isElement = (data: HResult): data is HElement =>
@@ -59,11 +57,15 @@ const parentElementIsPdf = (data: HResult): boolean => {
   return data.type === 'element' && data.tagName === 'pdf'
 }
 
+const getElement = (tagName: string) =>
+  find(pathEq(['tagName'], tagName))
+
 export default (data: HResult) => {
   if (isElement(data) && parentElementIsPdf(data)) {
+    console.log('>>>', getElement('content')(data.children).children)
     return {
       ...data.attributes,
-      content: data.children.map(convert).filter(Boolean)
+      content: getElement('content')(data.children).children.map(convert).filter(Boolean)
     }
   }
   throw new Error(ERROR.parentIsNotPdf)

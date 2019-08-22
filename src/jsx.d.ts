@@ -100,5 +100,6 @@ declare namespace JSX {
     image: ImageProps
     table: TableProps
     row: {}
+    content: {}
   }
 }
