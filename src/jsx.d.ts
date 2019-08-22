@@ -101,5 +101,7 @@ declare namespace JSX {
     table: TableProps
     row: {}
     content: {}
+    footer: {}
+    header: {}
   }
 }

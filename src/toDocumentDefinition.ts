@@ -1,5 +1,5 @@
-import { pathEq, propOr, propEq, omit, find } from 'ramda'
-import { ERROR } from './strings'
+import { pathEq, prop, propOr, propEq, pipe, omit, find } from 'ramda'
+import { ERROR, WARN } from './strings'
 import { HResult, HElement, HText } from './types'
 
 const isElement = (data: HResult): data is HElement =>
@@ -57,15 +57,34 @@ const parentElementIsPdf = (data: HResult): boolean => {
   return data.type === 'element' && data.tagName === 'pdf'
 }
 
-const getElement = (tagName: string) =>
-  find(pathEq(['tagName'], tagName))
+const getElementChildren = (tagName: string, data: HElement): HResult[] =>
+  propOr([], 'children', find(pathEq(['tagName'], tagName), prop('children', data)))
+
+const elementsOutsideContainers = (data: HElement) => {
+  if (data.children.map(isText).length > 0) {
+    return true
+  }
+  const containers = ['content', 'footer', 'header']
+  const elements = data.children
+    .filter(isElement).map(prop('tagName'))
+    .filter(el => !containers.includes(el))
+  if (elements.length > 0) {
+    return true
+  }
+  return false
+}
+
 
 export default (data: HResult) => {
   if (isElement(data) && parentElementIsPdf(data)) {
-    console.log('>>>', getElement('content')(data.children).children)
+    if (elementsOutsideContainers(data)) {
+      console.warn(WARN.elementsOutsideContainers)
+    }
     return {
       ...data.attributes,
-      content: getElement('content')(data.children).children.map(convert).filter(Boolean)
+      content: getElementChildren('content', data).map(convert).filter(Boolean),
+      footer: getElementChildren('footer', data).map(convert).filter(Boolean),
+      header: getElementChildren('footer', data).map(convert).filter(Boolean),
     }
   }
   throw new Error(ERROR.parentIsNotPdf)
