@@ -44,10 +44,21 @@ interface Style {
   markerColor?: string
   leadingIndent?: any // ??
   width?: number | 'auto' | '*'
+  margins?: number[]
+  pageBreak?: 'before' | 'after'
 }
 
 interface ColumnsProps extends Style {
   columnGap?: number
+}
+
+interface ImageProps {
+  src: string
+  width?: number
+  height?: number
+  fit?: [number, number]
+  pageBreak?: 'before' | 'after'
+  opacity?: number
 }
 
 // jsx
@@ -57,5 +68,9 @@ declare namespace JSX {
     pdf: PdfProps
     text: Style
     columns: ColumnsProps
+    stack: Style
+    ul: Style
+    ol: Style
+    image: ImageProps
   }
 }

@@ -9,20 +9,34 @@ const isElement = (data: HResult): data is HElement =>
 const isText = (data: HResult): data is HText =>
   data.type === 'text'
 
+const handleChild = (child: HResult) =>
+  isText(child) ? child.text : convert(child)
+
 const convert = (data: HResult) => {
   if (isElement(data)) {
     const { tagName, attributes, children } = data
-    switch (tagName) {
-      case 'text': return {
-        text: children.map(child => isText(child) ? child.text : convert(child)),
+    const simpleTags = [
+      'text',
+      'columns',
+      'stack',
+      'ol',
+      'ul',
+    ]
+    if (simpleTags.includes(tagName)) {
+      return {
+        [tagName]: children.map(handleChild),
         ...attributes,
       }
-      case 'columns': return {
-        columns: children.map(child => isText(child) ? child.text : convert(child)),
-        ...attributes,
-      }
-      default: return null
     }
+    if (tagName === 'image') {
+      const image = attributes['src'] || ''
+      const props = Object.keys(attributes).filter(key => key !== 'src').reduce((res, key) => ({ ...res, [key]: attributes['key'] }), {})
+      return {
+        image,
+        ...props,
+      }
+    }
+    return null
   }
   return null
 }
