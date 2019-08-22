@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "types": "dist/types.d.ts",
   "dependencies": {
     "pdfmake": "^0.1.58",
     "ramda": "^0.26.1"
@@ -16,7 +16,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && tsc && cp src/jsx.d.ts dist/jsx.d.ts && cp src/types.d.ts dist/types.d.ts"
+    "build": "rm -rf dist && tsc && cp typesForDist/jsx.d.ts dist/jsx.d.ts && cp typesForDist/types.d.ts dist/types.d.ts"
   },
   "keywords": [],
   "author": "",
