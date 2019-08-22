@@ -1,13 +1,13 @@
-interface HText {
+export interface HText {
   type: 'text'
   text: string
 }
 
-interface HElement {
+export interface HElement {
   type: 'element'
   tagName: string
   attributes: object
-  children: (Element | HText)[]
+  children: (HElement | HText)[]
 }
 
-export type HResult = HElement
+export type HResult = HElement | HText

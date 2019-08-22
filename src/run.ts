@@ -3,4 +3,4 @@ import dd from './toDocumentDefinition'
 
 console.log(c)
 console.log('---')
-console.log(dd(c))
+console.log(JSON.stringify(dd(c), null, 1))

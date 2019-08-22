@@ -9,6 +9,12 @@ type PageSize = '4A0' | '2A0' | 'A0' | 'A1' | 'A2' | 'A3' | 'A4' | 'A5' | 'A6' |
   | 'SRA0' | 'SRA1' | 'SRA2' | 'SRA3' | 'SRA4'
   | 'EXECUTIVE' | 'FOLIO' | 'LEGAL' | 'LETTER' | 'TABLOID'
 
+type Alignment = 'left' | 'right' | 'justify' | 'center'
+
+// from https://github.com/bpampuch/pdfmake/blob/master/examples/textDecorations.js
+type Decoration = 'underline' | 'lineThrough' | 'overline'
+type DecorationStyle = 'dashed' | 'dotted' | 'double' | 'wavy'
+
 // element properties
 
 interface PdfProps {
@@ -17,10 +23,39 @@ interface PdfProps {
   pageSize?: PageSize | { width: number; height: number }
 }
 
+interface Style {
+  font?: string
+  fontSize?: number
+  fontFeatures?: any // ??
+  bold?: boolean
+  italics?: boolean
+  alignment?: Alignment
+  color?: string
+  //columnGap?: any;
+  fillColor?: string
+  decoration?: Decoration
+  decorationStyle?: DecorationStyle
+  decorationany?: any // ?
+  decorationColor?: string
+  background?: any // ??
+  lineHeight?: number
+  characterSpacing?: number
+  noWrap?: boolean
+  markerColor?: string
+  leadingIndent?: any // ??
+  width?: number | 'auto' | '*'
+}
+
+interface ColumnsProps extends Style {
+  columnGap?: number
+}
+
 // jsx
 
 declare namespace JSX {
   interface IntrinsicElements {
     pdf: PdfProps
+    text: Style
+    columns: ColumnsProps
   }
 }
