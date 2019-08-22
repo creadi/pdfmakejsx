@@ -1,7 +1,13 @@
-// @ts-ignore
 import { JSXInternal } from './jsx'
 export = mod
-export as namespace mod;
+export as namespace mod
+
+/*
+  This technique to get JSX types on the distributed package is inpired by
+  https://github.com/preactjs/preact/blob/master/src/index.d.ts
+
+  Difficulty was to get TS to that this is the JSX flavour we are talking about
+*/
 
 declare namespace mod {
   export import JSX = JSXInternal
