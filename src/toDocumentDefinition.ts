@@ -1,4 +1,4 @@
-import { pathEq, prop, propOr, propEq, pipe, omit, find } from 'ramda'
+import { pathEq, prop, propOr, propEq, omit, find } from 'ramda'
 import { ERROR, WARN } from './strings'
 import { HResult, HElement, HText } from './types'
 
@@ -10,6 +10,19 @@ const isText = (data: HResult): data is HText =>
 
 const handleChild = (child: HResult) =>
   isText(child) ? child.text : convert(child)
+
+const isCanvasElement = (data: HElement): boolean =>
+  [
+    'rect',
+    'polyline',
+    'ellipse',
+    'line',
+  ].includes(data.tagName)
+
+const convertCanvasElement = ({ tagName, attributes }: HElement) => ({
+  type: tagName,
+  ...attributes,
+})
 
 const convert = (data: HResult) => {
   if (isElement(data)) {
@@ -43,6 +56,17 @@ const convert = (data: HResult) => {
             .map(({ children }) => children.map(handleChild)),
           ...omit(['layout'], attributes)
         }
+      }
+    }
+    if (tagName === 'canvas') {
+      return {
+        canvas: children
+          .filter(isElement)
+          .filter(isCanvasElement)
+          .map(({ tagName, attributes }) => ({
+            type: tagName,
+            ...attributes,
+          }))
       }
     }
     return null

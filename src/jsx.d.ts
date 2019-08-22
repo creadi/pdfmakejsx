@@ -87,6 +87,51 @@ interface TableProps {
   widths?: Width[]
 }
 
+interface CanvasCommonProps {
+  lineWidth?: number
+  lineColor?: string
+  dash?: { length?: number, space?: number }
+  strokeOpacity?: number
+}
+
+interface CanvasStrokeProps extends CanvasCommonProps {
+  lineCap?: 'square' | 'round'
+}
+
+interface CanvasPolygonProps extends CanvasCommonProps {
+  lineCap?: 'square' | 'round'
+  color?: string
+  fillOpacity?: number
+  linearGradient?: string[]
+}
+
+interface CanvasRectProps extends CanvasPolygonProps {
+  x: number
+  y: number
+  w: number
+  h: number
+  r?: number
+}
+
+interface CanvasPolylineProps extends CanvasStrokeProps, CanvasPolygonProps {
+  closePath?: boolean
+  points: { x: number, y: number }[]
+}
+
+interface CanvasLineProps extends CanvasStrokeProps {
+  x1: number
+  x2: number
+  y1: number
+  y2: number
+}
+
+interface CanvasEllipseProps extends CanvasPolygonProps {
+  x: number
+  y: number
+  r1: number
+  r2: number
+}
+
 // jsx
 
 declare namespace JSX {
@@ -103,5 +148,10 @@ declare namespace JSX {
     content: {}
     footer: {}
     header: {}
+    canvas: {}
+    rect: CanvasRectProps
+    polyline: CanvasPolylineProps
+    line: CanvasLineProps
+    ellipse: CanvasEllipseProps
   }
 }
