@@ -1,6 +1,6 @@
 # pdfmakejsx
 
-Create the [document definition](https://pdfmake.github.io/docs/document-definition-object) for [pdfmake](https://github.com/bpampuch/pdfmake) with JSX.
+Create the [document definition](https://pdfmake.github.io/docs/document-definition-object) for [pdfmake](https://github.com/bpampuch/pdfmake) using [JSX](https://jasonformat.com/wtf-is-jsx/).
 
 ## Usage
 
@@ -12,7 +12,7 @@ npm install pdfmakejsx
 
 If you are using typescript, `tsconfig.json` needs `compilerOptions.jsx` to be set to `react`.
 
-You can also add `compilerOptions.jsxFactory` with `h` (default is `React.createElement`) to tell typescript how to interpret the jsx. This is not recommended if you use other JSX libraries in the same codebase. To set the [JSX pragma](https://jasonformat.com/wtf-is-jsx/) on a file to file basis add `/** @jsx h */` at the top of each `.tsx` file.
+You can also add `compilerOptions.jsxFactory` with `h` (default is `React.createElement`) to tell typescript how to interpret TSX files. This is not recommended if you use other JSX libraries in the same codebase. To set the [JSX pragma](https://jasonformat.com/wtf-is-jsx/) on a file to file basis add `/** @jsx h */` at the top of each JSX file.
 
 ```tsx
 /** @jsx h */
@@ -48,7 +48,7 @@ const page = pdf('Hello')
 console.log(toDocumentDefinition(page))
 ```
 
-`npx ts-node try.ts` returns
+`npx ts-node try.ts` logs
 
 ```json
 {
@@ -66,15 +66,17 @@ console.log(toDocumentDefinition(page))
 }
 ```
 
-a document definition that can be passed to `pdfmake`. **This library does not include `pdfmake`, you will have to install that separately.**
+This is a document definition that can be passed to `pdfmake`.
+
+**`pdfmakejsx` does not include `pdfmake`, you will have to install that separately.**
 
 ### Base elements
 
-`<pdf>` has to be the parent element. It takes only 3 direct children: `<content>`, `<header>` and `<footer>` any other will be ignored.
+`<pdf>` has to be the parent element. It takes only 3 direct children: `<content>`, `<header>` and `<footer>`, any other will be ignored.
 
-The base elements, such as `<text>` above, are as close as possible to the `pdfmake` [specs](https://pdfmake.github.io/docs/document-definition-object/). It is highly recommended to use typescript to see which elements and properties are allowed.
+The base elements, such as `<text>` above, are as close as possible to the `pdfmake` [specs](https://pdfmake.github.io/docs/document-definition-object/). It is highly recommended to use typescript to let your IDE and compiler tell you which elements and properties are allowed.
 
-However some elements are slightly different, form the document definition:
+However some elements differ slightly form the document definition specs:
 
 * A required `src` property has been added to `<image>`
 
@@ -136,6 +138,7 @@ becomes
   <rect x={100} y={200} w={300} h={50} color="blue"/>
   <polyline points={[{x: 100, y: 0}, { x: 350, y: 0 }, { x: 300, y: 300 }]} closePath={true} color="green" />
   <ellipse x={200} y={200} r1={100} r2={50} color="red" />
+  <text>Will be ignored</text>
 </canvas>
 ```
 
