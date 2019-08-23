@@ -42,27 +42,27 @@ interface PdfProps {
 }
 
 interface Style {
-  font?: string
-  fontSize?: number
-  fontFeatures?: any // ??
-  bold?: boolean
-  italics?: boolean
   alignment?: Alignment
+  background?: any // ??
+  bold?: boolean
+  characterSpacing?: number
   color?: string
-  fillColor?: string
   decoration?: Decoration
+  decorationColor?: string
   decorationStyle?: DecorationStyle
   decorationany?: any // ?
-  decorationColor?: string
-  background?: any // ??
-  lineHeight?: number
-  characterSpacing?: number
-  noWrap?: boolean
-  markerColor?: string
+  fillColor?: string
+  font?: string
+  fontFeatures?: any // ??
+  fontSize?: number
+  italics?: boolean
   leadingIndent?: any // ??
-  width?: Width
+  lineHeight?: number
   margins?: number[]
+  markerColor?: string
+  noWrap?: boolean
   pageBreak?: 'before' | 'after'
+  width?: Width
 }
 
 interface ColumnsProps extends Style {
@@ -71,11 +71,11 @@ interface ColumnsProps extends Style {
 
 interface ImageProps {
   src: string
-  width?: number
-  height?: number
   fit?: [number, number]
-  pageBreak?: 'before' | 'after'
+  height?: number
   opacity?: number
+  pageBreak?: 'before' | 'after'
+  width?: number
 }
 
 interface TableProps {
@@ -87,9 +87,9 @@ interface TableProps {
 }
 
 interface CanvasCommonProps {
-  lineWidth?: number
-  lineColor?: string
   dash?: { length?: number, space?: number }
+  lineColor?: string
+  lineWidth?: number
   strokeOpacity?: number
 }
 
@@ -135,22 +135,22 @@ interface CanvasEllipseProps extends CanvasPolygonProps {
 
 declare namespace JSX {
   interface IntrinsicElements {
-    pdf: PdfProps
-    text: Style
+    canvas: {}
     columns: ColumnsProps
-    stack: Style
-    ul: Style
-    ol: Style
-    image: ImageProps
-    table: TableProps
-    row: {}
     content: {}
+    ellipse: CanvasEllipseProps
     footer: {}
     header: {}
-    canvas: {}
-    rect: CanvasRectProps
-    polyline: CanvasPolylineProps
+    image: ImageProps
     line: CanvasLineProps
-    ellipse: CanvasEllipseProps
+    ol: Style
+    pdf: PdfProps
+    polyline: CanvasPolylineProps
+    rect: CanvasRectProps
+    row: {}
+    stack: Style
+    table: TableProps
+    text: Style
+    ul: Style
   }
 }

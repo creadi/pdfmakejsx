@@ -19,19 +19,14 @@ const isCanvasElement = (data: HElement): boolean =>
     'line',
   ].includes(data.tagName)
 
-const convertCanvasElement = ({ tagName, attributes }: HElement) => ({
-  type: tagName,
-  ...attributes,
-})
-
 const convert = (data: HResult) => {
   if (isElement(data)) {
     const { tagName, attributes, children } = data
     const simpleTags = [
-      'text',
       'columns',
-      'stack',
       'ol',
+      'stack',
+      'text',
       'ul',
     ]
     if (simpleTags.includes(tagName)) {
@@ -83,21 +78,6 @@ const parentElementIsPdf = (data: HResult): boolean => {
 
 const getElementChildren = (tagName: string, data: HElement): HResult[] =>
   propOr([], 'children', find(pathEq(['tagName'], tagName), prop('children', data)))
-
-const elementsOutsideContainers = (data: HElement) => {
-  if (data.children.map(isText).length > 0) {
-    return true
-  }
-  const containers = ['content', 'footer', 'header']
-  const elements = data.children
-    .filter(isElement).map(prop('tagName'))
-    .filter(el => !containers.includes(el))
-  if (elements.length > 0) {
-    return true
-  }
-  return false
-}
-
 
 export default (data: HResult) => {
   if (isElement(data) && parentElementIsPdf(data)) {
