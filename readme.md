@@ -1,222 +1,153 @@
-* tsconfig
+# pdfmakejsx
 
-```js
+Create the [document definition](https://pdfmake.github.io/docs/document-definition-object) for [pdfmake](https://github.com/bpampuch/pdfmake) with JSX.
+
+## Usage
+
+```
+npm install pdfmakejsx
+```
+
+### Convert JSX to JS
+
+If you are using typescript, `tsconfig.json` needs `compilerOptions.jsx` to be set to `react`.
+
+You can also add `compilerOptions.jsxFactory` with `h` (default is `React.createElement`) to tell typescript how to interpret the jsx. This is not recommended if you use other JSX libraries in the same codebase. To set the [JSX pragma](https://jasonformat.com/wtf-is-jsx/) on a file to file basis add `/** @jsx h */` at the top of each `.tsx` file.
+
+```tsx
+/** @jsx h */
+import { h } from 'pdfmakejsx'
+```
+
+With a defined `jsxFactory`, just importing `h` is enough.
+
+If you are using [Babel](https://babeljs.io), set the pragma option as explained [here](https://babeljs.io/docs/en/babel-plugin-transform-react-jsx#pragma).
+
+### Example
+
+* `pdf.tsx`
+
+```tsx
+import { h } from 'pdfmakejsx'
+
+export default (title: string) =>
+  <pdf pageOrientation="landscape" pageSize="A4">
+    <content>
+      <text fontSize={20} bold={true}>{ title }</text>
+    </content>
+  </pdf>
+```
+
+* `try.ts`
+
+```ts
+import { toDocumentDefinition } from 'pdfmakejsx'
+import pdf from './pdf.tsx'
+
+const page = pdf('Hello')
+console.log(toDocumentDefinition(page))
+```
+
+`npx ts-node try.ts` returns
+
+```json
 {
-  "compilerOptions": {
-    "jsx": "react",
-    "noImplicitAny": false, // maybe not necessary but ts did not find JSX at compile time
-    // ...
-  }
-}
-```
-
-* types.d.ts
-
-```ts
-declare namespace JSX {
-  interface IntrinsicElements {
-    element: Properties
-  }
-}
-```
-
-* h
-
-```ts
-export const h = (...args: any[]) => {
-  return args
-}
-```
-
----
-
-```jsx
-export default <element prop="propValue">data</element>
-```
-
-```js
-[ 'element', { prop: 'propValue' }, 'data' ]
-```
-
-```ts
-type Args = [string, object, string]
-``` 
-
----
-
-```jsx
-export default <element type="parent">
-  <element type="child">data</element>
-</element>
-```
-
-```js
-[
-  'element',
-  { type: 'parent' },
-  [ 'element', { type: 'child' }, 'data' ]
-]
-```
-
-```ts
-type Args = [string, object, [string, object, string]]
-``` 
-
----
-
-```jsx
-export default <element type="parent">
-  {
-    ['a', 'b'].map(data => <element type="child">{data}</element>)
-  }
-</element>
-```
-
-```js
-[
-  "element",
-  {"type":"parent"},
-  [
-    ["element",{"type":"child"},"a"],
-    ["element",{"type":"child"},"b"]
+  "pageOrientation": "landscape",
+  "pageSize": "A4",
+  "content": [
+    {
+      "text": [
+        "Hello"
+      ],
+      "fontSize": 20,
+      "bold": true
+    }
   ]
-]
-```
-
-```ts
-type Args = [string, object, [string, object, string][]]
-``` 
-
----
-
-```jsx
-const Component = data =>
-  <element type="child">data</element>
-
-export default <element type="parent">
-  {
-    ['a', 'b'].map(Component)
-  }
-</element>
-```
-
-Same as before
-
----
-
-```jsx
-const Component = data =>
-  <element type="child">data</element>
-
-export default <element type="parent">
-  {
-    ['a', 'b'].map(data => <Component>{data}</Component>)
-  }
-</element>
-```
-
-```js
-[ 'element',
-  { type: 'parent' },
-  [
-    [ [Function: Component], null, 'a' ],
-    [ [Function: Component], null, 'b' ]
-  ]
-]
-```
-
-```ts
-type Args = [string, object, [Function, object | null, string][]]
-``` 
-
-Update `h`
-
-```ts
-export const h = (...args: any[]) => {
-  const [firstArg, props, children] = args
-  if (typeof firstArg === 'function') {
-    return firstArg(children)
-  }
-  return args
 }
 ```
 
-```js
-[
-  "element",
-  {"type":"parent"},
-  [
-    ["element",{"type":"child"},"a"],
-    ["element",{"type":"child"},"b"]
-  ]
-]
-```
+a document definition that can be passed to `pdfmake`. **This library does not include `pdfmake`, you will have to install that separately.**
 
----
+### Base elements
+
+`<pdf>` has to be the parent element. It takes only 3 direct children: `<content>`, `<header>` and `<footer>` any other will be ignored.
+
+The base elements, such as `<text>` above, are as close as possible to the `pdfmake` [specs](https://pdfmake.github.io/docs/document-definition-object/). It is highly recommended to use typescript to see which elements and properties are allowed.
+
+However some elements are slightly different, form the document definition:
+
+* A required `src` property has been added to `<image>`
 
 ```jsx
-const Component = ({ prop }: {prop: string}, children) =>
-  <element type="child" prop={prop}>{ children }</element>
-
-export default <element type="parent">
-  {
-    ['a', 'b'].map(x => <Component prop={x}>data</Component>)
-  }
-</element>
+<image src="image.png" width={100}/>
 ```
 
-```js
-[
-  "element",
-  {"type":"parent"},
-  [
-    ["element",{"type":"child"},null],
-    ["element",{"type":"child"},null]
-  ]
-]
-```
+becomes
 
-The components `children` is ignored.
-
-Update `h`
-
-```ts
-export const h = (...args: any[]) => {
-  const [firstArg, props, children] = args
-  if (typeof firstArg === 'function') {
-    return firstArg(props, children) // add props
-  }
-  return args
+```json
+{
+  "image": "image.png",
+  "width": 100
 }
 ```
 
-This will not work anymore
+* Tables have `<row>` elements
 
 ```jsx
-const Component = data =>
-  <element type="child">data</element>
-
-export default <element type="parent">
-  {
-    ['a', 'b'].map(Component)
-  }
-</element>
+<table widths={[200, '*']}>
+  <row>
+    <text bold={true}>A</text>
+    <text bold={true}>B</text>
+  </row>
+  <row>
+    <text>1</text>
+    <text>2</text>
+  </row>
+</table>
 ```
 
-It should not anyway.
+becomes
 
----
+```json
+{
+"table": {
+  "body": [
+    [
+      {"text": ["A"],"bold": true},
+      {"text": ["B"],"bold": true}
+    ],
+    [
+      {"text": ["1"]},
+      {"text": ["2"]}
+    ]
+  ],
+  "widths": [200,"*"]
+}
+```
+
+
+* `<canvas>` has its own internal elements
+
+`<line>`, `<rect>`, `<polyline>` and `<ellipse>` will be ignored if used outside of canvas. So will any other elements inside the canvas.
 
 ```jsx
-export default <element type="parent">
-  <element></element>
-</element>
+<canvas>
+  <line x1={0} x2={300} y1={0} y2={300} />
+  <rect x={100} y={200} w={300} h={50} color="blue"/>
+  <polyline points={[{x: 100, y: 0}, { x: 350, y: 0 }, { x: 300, y: 300 }]} closePath={true} color="green" />
+  <ellipse x={200} y={200} r1={100} r2={50} color="red" />
+</canvas>
 ```
 
-```js
-[
-  "element",
-  {"type":"parent"},
-  ["element",null]
-]
+becomes
+
+```json
+{
+  "canvas":[
+    {"type":"line","x1":0,"x2":300,"y1":0,"y2":300},
+    {"type":"rect","x":100,"y":200,"w":300,"h":50,"color":"blue"},
+    {"type":"polyline","points":[{"x":100,"y":0},{"x":350,"y":0},{"x":300,"y":300}],"closePath":true,"color":"green"},
+    {"type":"ellipse","x":200,"y":200,"r1":100,"r2":50,"color":"red"}
+  ]
+}
 ```

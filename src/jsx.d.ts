@@ -49,7 +49,6 @@ interface Style {
   italics?: boolean
   alignment?: Alignment
   color?: string
-  //columnGap?: any;
   fillColor?: string
   decoration?: Decoration
   decorationStyle?: DecorationStyle
