@@ -1,7 +1,7 @@
 {
   "name": "pdfmakejsx",
   "version": "1.0.0",
-  "description": "",
+  "description": "Create the document definition for pdfmake using JSX",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
   "dependencies": {
@@ -16,7 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rm -rf dist && tsc && node buildScript"
   },
-  "keywords": [],
+  "keywords": ["pdfmake", "jsx", "pdf"],
   "author": "",
   "license": "ISC"
 }
