@@ -14,9 +14,14 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rm -rf dist && tsc && node buildScript"
+    "build": "rm -rf dist && tsc && node buildScript",
+    "prepublish": "npm run build"
   },
-  "keywords": ["pdfmake", "jsx", "pdf"],
+  "keywords": [
+    "pdfmake",
+    "jsx",
+    "pdf"
+  ],
   "author": "",
   "license": "ISC"
 }
