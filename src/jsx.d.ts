@@ -58,7 +58,7 @@ interface Style {
   italics?: boolean
   leadingIndent?: any // ??
   lineHeight?: number
-  margins?: number[]
+  margin?: number[]
   markerColor?: string
   noWrap?: boolean
   pageBreak?: 'before' | 'after'
