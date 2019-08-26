@@ -1,6 +1,6 @@
 {
   "name": "pdfmakejsx",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create the document definition for pdfmake using JSX",
   "main": "dist/index.js",
   "types": "dist/types.d.ts",
