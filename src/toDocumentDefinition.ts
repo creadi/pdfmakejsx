@@ -1,4 +1,4 @@
-import { pathEq, prop, propOr, propEq, omit, find } from 'ramda'
+import { is, pathEq, prop, propOr, propEq, omit, find } from 'ramda'
 import { ERROR } from './strings'
 import { HResult, HElement, HText } from './types'
 
@@ -8,8 +8,12 @@ const isElement = (data: HResult): data is HElement =>
 const isText = (data: HResult): data is HText =>
   data.type === 'text'
 
-const handleChild = (child: HResult) =>
-  isText(child) ? child.text : convert(child)
+const handleChild = (child: HResult) => {
+  if (is(String, child)) {
+    return child
+  }
+  return isText(child) ? child.text : convert(child)
+}
 
 const isCanvasElement = (data: HElement): boolean =>
   [

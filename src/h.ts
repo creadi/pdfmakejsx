@@ -1,4 +1,4 @@
-import { flatten } from 'ramda'
+import { is, flatten } from 'ramda'
 import { HResult } from './types'
 
 const isArrayOfArrays = (data: any): boolean => {
@@ -10,6 +10,9 @@ const isArrayOfArrays = (data: any): boolean => {
 
 export const h = (...args: any[]): HResult => {
   const [tag, attributes, ...children] = args
+  if (is(Function, tag)) {
+    return tag(attributes, children)
+  }
   return {
     type: 'element',
     tagName: tag,
