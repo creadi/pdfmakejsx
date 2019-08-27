@@ -47,6 +47,7 @@ const convert = (data: HResult) => {
     }
     if (tagName === 'table') {
       return {
+        ...attributes,
         layout: propOr(undefined, 'layout', attributes),
         table: {
           body: children

@@ -78,7 +78,7 @@ interface ImageProps {
   width?: number
 }
 
-interface TableProps {
+interface TableProps extends Style {
   dontBreakRows?: boolean
   headerRows?: number
   heights?: number[] | TableRowFunction
