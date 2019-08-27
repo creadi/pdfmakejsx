@@ -86,6 +86,10 @@ interface TableProps extends Style {
   widths?: Width[]
 }
 
+interface StackProps extends Style {
+  unbreakable?: true
+}
+
 interface CanvasCommonProps {
   dash?: { length?: number, space?: number }
   lineColor?: string
@@ -148,7 +152,7 @@ declare namespace JSX {
     polyline: CanvasPolylineProps
     rect: CanvasRectProps
     row: {}
-    stack: Style
+    stack: StackProps
     table: TableProps
     text: Style
     ul: Style
