@@ -76,6 +76,7 @@ interface ImageProps {
   src: string
   fit?: [number, number]
   height?: number
+  margin?: number[]
   opacity?: number
   pageBreak?: 'before' | 'after'
   width?: number
