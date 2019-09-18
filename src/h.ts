@@ -1,24 +1,16 @@
 import { is, flatten } from 'ramda'
 import { HResult } from './types'
 
-const isArrayOfArrays = (data: any): boolean => {
-  if (Array.isArray(data)) {
-    return !data.map(Array.isArray).includes(false)
-  }
-  return false
-}
-
 export const h = (...args: any[]): HResult => {
-  const [tag, attributes, ...children] = args
+  const [tag, attributes, ...rest] = args
   if (is(Function, tag)) {
-    return tag(attributes, children)
+    return tag(attributes, rest)
   }
+  const children = rest || []
   return {
     type: 'element',
     tagName: tag,
     attributes: attributes || {},
-    children: isArrayOfArrays(children)
-      ? flatten(children)
-      : children.map(d => d.type && d.type === 'element' ? d : { type: 'text', text: d })
+    children: flatten(children).map(d => d.type && d.type === 'element' ? d : { type: 'text', text: d })
   }
 }
