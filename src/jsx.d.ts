@@ -60,6 +60,7 @@ interface Style {
   italics?: boolean
   leadingIndent?: any // ??
   lineHeight?: number
+  link?: string
   margin?: number[]
   markerColor?: string
   noWrap?: boolean
@@ -76,6 +77,7 @@ interface ImageProps {
   src: string
   fit?: [number, number]
   height?: number
+  link?: string
   margin?: number[]
   opacity?: number
   pageBreak?: 'before' | 'after'
