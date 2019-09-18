@@ -9,10 +9,13 @@ const isText = (data: HResult): data is HText =>
   data.type === 'text'
 
 const handleChild = (child: HResult) => {
+  if (is(Number, child)) {
+    return String(child)
+  }
   if (is(String, child)) {
     return child
   }
-  return isText(child) ? child.text : convert(child)
+  return isText(child) ? String(child.text) : convert(child)
 }
 
 const isCanvasElement = (data: HElement): boolean =>
@@ -90,7 +93,8 @@ export default (data: HResult) => {
       ...data.attributes,
       content: getElementChildren('content', data).map(convert).filter(Boolean),
       footer: getElementChildren('footer', data).map(convert).filter(Boolean),
-      header: getElementChildren('footer', data).map(convert).filter(Boolean),
+      header: getElementChildren('header', data).map(convert).filter(Boolean),
+      background: getElementChildren('background', data).map(convert).filter(Boolean),
     }
   }
   throw new Error(ERROR.parentIsNotPdf)

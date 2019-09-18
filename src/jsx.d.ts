@@ -39,6 +39,8 @@ interface PdfProps {
   pageMargins?: Margins
   pageOrientation?: 'portrait' | 'landscape'
   pageSize?: PageSize | { width: number; height: number }
+  defaulStyle?: Style
+  styles?: { [key: string]: Style }
 }
 
 interface Style {
@@ -58,10 +60,12 @@ interface Style {
   italics?: boolean
   leadingIndent?: any // ??
   lineHeight?: number
+  link?: string
   margin?: number[]
   markerColor?: string
   noWrap?: boolean
   pageBreak?: 'before' | 'after'
+  style?: string
   width?: Width
 }
 
@@ -73,6 +77,8 @@ interface ImageProps {
   src: string
   fit?: [number, number]
   height?: number
+  link?: string
+  margin?: number[]
   opacity?: number
   pageBreak?: 'before' | 'after'
   width?: number
