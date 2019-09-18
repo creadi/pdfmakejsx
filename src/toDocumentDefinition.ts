@@ -93,7 +93,7 @@ export default (data: HResult) => {
       ...data.attributes,
       content: getElementChildren('content', data).map(convert).filter(Boolean),
       footer: getElementChildren('footer', data).map(convert).filter(Boolean),
-      header: getElementChildren('footer', data).map(convert).filter(Boolean),
+      header: getElementChildren('header', data).map(convert).filter(Boolean),
     }
   }
   throw new Error(ERROR.parentIsNotPdf)
