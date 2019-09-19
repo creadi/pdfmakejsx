@@ -145,6 +145,7 @@ interface CanvasEllipseProps extends CanvasPolygonProps {
 
 declare namespace JSX {
   interface IntrinsicElements {
+    background: {}
     canvas: {}
     columns: ColumnsProps
     content: {}
